@@ -26,14 +26,17 @@ namespace DelcoreMA2
 			
 			InitializeComponent();
 
+			// Selects the departure city information for each item
 			var cities = from flight in main.FlightList
 						select flight.DepartureCity;
 
+			// Populates the listbox with the departure city for each item
 			lstFlight.DataContext = cities;
 		}
-
+		// Handles Add button
 		private void btnAdd_Click(object sender, RoutedEventArgs e)
 		{
+			// Checks to make sure no textbox is empty
 			if (tbAirline.Text == "" || tbDepartureCity.Text == "" || tbDestinationCity.Text == "" ||
 				tbDepartureDate.Text == "" || tbFlightTime.Text == "")
 			{
@@ -56,7 +59,7 @@ namespace DelcoreMA2
 					MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 		}
-
+		// Handles Update button
 		private void btnUpdate_Click(object sender, RoutedEventArgs e)
 		{
 			var result = MessageBox.Show("Are you sure you want to update this flight?",
@@ -64,6 +67,7 @@ namespace DelcoreMA2
 
 			if (result == MessageBoxResult.Yes)
 			{
+				// Checks if any textboxes are empty
 				if (tbAirline.Text == "" || tbDepartureCity.Text == "" || tbDestinationCity.Text == "" ||
 				tbDepartureDate.Text == "" || tbFlightTime.Text == "")
 				{
@@ -73,6 +77,7 @@ namespace DelcoreMA2
 				else if (int.TryParse(tbAirline.Text, out int airlineID) &&
 					double.TryParse(tbFlightTime.Text, out double flightTime))
 				{
+					// Checks if an item in the listbox is selected before updating
 					if (lstFlight.SelectedIndex != -1)
 					{
 						Flights flightObj = new Flights(lstFlight.SelectedIndex, airlineID,
@@ -91,12 +96,12 @@ namespace DelcoreMA2
 				}
 				else
 				{
-					MessageBox.Show("Must input a whole number for Airline ID, and a number for Number of Hours.", "Error",
-						MessageBoxButton.OK, MessageBoxImage.Error);
+					MessageBox.Show("Must input a whole number for Airline ID, and a number for Number of Hours.",
+						"Error", MessageBoxButton.OK, MessageBoxImage.Error);
 				}
 			}
 		}
-
+		// Handles Delete button
 		private void btnDelete_Click(object sender, RoutedEventArgs e)
 		{
 			var result = MessageBox.Show("Are you sure you want to delete this flight?",
@@ -104,6 +109,7 @@ namespace DelcoreMA2
 
 			if (result == MessageBoxResult.Yes)
 			{
+				// Checks if an item in the listbox is selected before deletion
 				if (lstFlight.SelectedIndex != -1)
 				{
 					main.FlightList.RemoveAt(lstFlight.SelectedIndex);
@@ -123,7 +129,7 @@ namespace DelcoreMA2
 				}
 			}
 		}
-
+		// Handles population of textboxes when an item in the listbox is selected
 		private void lstFlight_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			int i = lstFlight.SelectedIndex;
@@ -144,7 +150,7 @@ namespace DelcoreMA2
 				lstAirlines.DataContext = air;
 			}
 		}
-
+		// Closes program from File > Quit in the menu bar
 		private void MenuQuit_Click(object sender, RoutedEventArgs e)
 		{
 			var result = MessageBox.Show("Are you sure you want to exit?", "Quit",
@@ -154,6 +160,7 @@ namespace DelcoreMA2
 				Application.Current.Shutdown();
 			}
 		}
+		// Opens HelpWindow from the menu bar
 		private void MenuHelp_Click(object sender, RoutedEventArgs e)
 		{
 			HelpWindow helpWindow = new HelpWindow();

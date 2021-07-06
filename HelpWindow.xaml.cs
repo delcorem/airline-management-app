@@ -21,6 +21,8 @@ namespace DelcoreMA2
 		{
 			InitializeComponent();
 		}
+
+		// Closes program from File > Quit in the menu bar
 		private void MenuQuit_Click(object sender, RoutedEventArgs e)
 		{
 			var result = MessageBox.Show("Are you sure you want to exit?", "Quit",
