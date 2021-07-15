@@ -20,11 +20,12 @@ namespace DelcoreMA2
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		// Creation of lists, a stack, and a queue to hold information and allow it to be shared amongst windows
 		private List<Flights> flightList = new List<Flights>();
 		private Queue<Airlines> airlineQueue = new Queue<Airlines>();
 		private Stack<Passenger> passengerStack = new Stack<Passenger>();
 		private List<Customer> custList = new List<Customer>();
-
+		// Getters and setters
 		internal List<Flights> FlightList { get => flightList; set => flightList = value; }
 		internal Queue<Airlines> AirlineQueue { get => airlineQueue; set => airlineQueue = value; }
 		internal Stack<Passenger> PassengerStack { get => passengerStack; set => passengerStack = value; }
@@ -63,31 +64,31 @@ namespace DelcoreMA2
 			PassengerStack.Push(new Passenger(3, 3, 3));
 			PassengerStack.Push(new Passenger(4, 4, 4));
 		}
-
+		// Opens CustomerWindow
 		private void btnCustomer_Click(object sender, RoutedEventArgs e)
 		{
 			CustomerWindow customerWindow = new CustomerWindow(this);
 			customerWindow.ShowDialog();
 		}
-
+		// Opens FlightWindow
 		private void btnFlight_Click(object sender, RoutedEventArgs e)
 		{
 			FlightWindow flightWindow = new FlightWindow(this);
 			flightWindow.ShowDialog();
 		}
-
+		// Opens AirlineWindow
 		private void btnAirline_Click(object sender, RoutedEventArgs e)
 		{
 			AirlineWindow airlineWindow = new AirlineWindow(this);
 			airlineWindow.ShowDialog();
 		}
-
+		// Opens PassengerWindow
 		private void btnPassenger_Click(object sender, RoutedEventArgs e)
 		{
 			PassengerWindow passengerWindow = new PassengerWindow(this);
 			passengerWindow.ShowDialog();
 		}
-
+		// Closes application from the File > Quit menu item
 		private void MenuQuit_Click(object sender, RoutedEventArgs e)
 		{
 			var result = MessageBox.Show("Are you sure you want to exit?", "Quit",
@@ -97,7 +98,7 @@ namespace DelcoreMA2
 				Application.Current.Shutdown();
 			}
 		}
-
+		// Opens HelpWindow from the Help menu item
 		private void MenuHelp_Click(object sender, RoutedEventArgs e)
 		{
 			HelpWindow helpWindow = new HelpWindow();

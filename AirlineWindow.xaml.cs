@@ -114,7 +114,7 @@ namespace DelcoreMA2
 					MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 		}
-
+		// Handles the Update button, that allows the user to change information about a selected item in the listbox
 		private void btnUpdate_Click(object sender, RoutedEventArgs e)
 		{
 			var result = MessageBox.Show("Are you sure you want to update this airline?",
@@ -122,6 +122,7 @@ namespace DelcoreMA2
 
 			if (result == MessageBoxResult.Yes)
 			{
+				// Checks to make sure no textbox is empty
 				if (tbName.Text == "" || tbSeats.Text == "" || airplaneType == "" ||
 				mealChoice == "")
 				{
@@ -130,21 +131,26 @@ namespace DelcoreMA2
 				}
 				else if (int.TryParse(tbSeats.Text, out int seatsAvailable))
 				{
+					// Checks to make sure an item is selected in the listbox
 					if (lstAirlines.SelectedIndex != -1)
 					{
-						// As queue does not have the functionality to update an object at a specific index,
-						// I copied to a list, did the update, then converted back to a queue
+						/* Using a queue was a requirement, so as queues do not have the
+						 * functionality to update an object at a specific index, I copied
+						 * to a list, did the update, then converted back to a queue
+						 */
 						List<Airlines> airlineList = new List<Airlines>(main.AirlineQueue.ToList());
 
+						// Grabs information from the textboxes, then updates the selected item with the new information
 						Airlines airObj = new Airlines(lstAirlines.SelectedIndex, tbName.Text,
 							airplaneType, seatsAvailable, mealChoice);
 						airlineList[lstAirlines.SelectedIndex] = airObj;
 
+						// Converts back to a queue
 						main.AirlineQueue = new Queue<Airlines>(airlineList);
 
+						// Repopulates the listbox with the updated stack
 						var plane = from airline in main.AirlineQueue
 									select airline.Name;
-
 						lstAirlines.DataContext = plane;
 					}
 					else
@@ -160,7 +166,7 @@ namespace DelcoreMA2
 				}
 			}
 		}
-
+		// Handles the Delete button, deleting a selected item in the listbox
 		private void btnDelete_Click(object sender, RoutedEventArgs e)
 		{
 			var result = MessageBox.Show("Are you sure you want to delete this airline?",
@@ -168,24 +174,30 @@ namespace DelcoreMA2
 
 			if (result == MessageBoxResult.Yes)
 			{
+				// Checks to make sure there is a selected item in the listbox
 				if (lstAirlines.SelectedIndex != -1)
 				{
-					// As queues don't have the functionality to delete at a specific index, I convert to
-					// a list, delete at specified index, then convert back to a queue
+					/* Using a queue was a requirement, so as queues do not have the
+					 * functionality to delete an object at a specific index, I copied
+					 * to a list, did the delete, then converted back to a queue
+					 */
 					List<Airlines> airlineList = new List<Airlines>(main.AirlineQueue.ToList());
 
+					// Deletes selected item
 					airlineList.RemoveAt(lstAirlines.SelectedIndex);
 
+					// Resets the ID of all items remaining in the list, so there are no gaps in IDs. (Ex. 0, 1, 3, etc.)
 					for (int i = 0; i < airlineList.Count; i++)
 					{
 						airlineList[i].ID = i;
 					}
 
+					//Converts back to a queue
 					main.AirlineQueue = new Queue<Airlines>(airlineList);
 
+					// Repopulates the listbox with the updated stack
 					var plane = from airline in main.AirlineQueue
 								select airline.Name;
-
 					lstAirlines.DataContext = plane;
 				}
 				else
@@ -195,57 +207,49 @@ namespace DelcoreMA2
 				}
 			}
 		}
-
+		// Assigns airplaneType based on the radio button clicked
 		private void rbBoeing_Checked(object sender, RoutedEventArgs e)
 		{
 			airplaneType = "Boeing 777";
 		}
-
 		private void rbAirbus_Checked(object sender, RoutedEventArgs e)
 		{
 			airplaneType = "Airbus 220";
 		}
-
 		private void rbLockheed_Checked(object sender, RoutedEventArgs e)
 		{
 			airplaneType = "Lockheed 120";
 		}
-
 		private void rbComac_Checked(object sender, RoutedEventArgs e)
 		{
 			airplaneType = "Comac C919";
 		}
-
 		private void rbDouglas_Checked(object sender, RoutedEventArgs e)
 		{
 			airplaneType = "Douglas DC6";
 		}
-
+		// Assigns mealChoice based on the clicked radio button
 		private void rbPizza_Checked(object sender, RoutedEventArgs e)
 		{
 			mealChoice = "Pizza";
 		}
-
 		private void rbSushi_Checked(object sender, RoutedEventArgs e)
 		{
 			mealChoice = "Sushi";
 		}
-
 		private void rbChicken_Checked(object sender, RoutedEventArgs e)
 		{
 			mealChoice = "Chicken";
 		}
-
 		private void rbBurger_Checked(object sender, RoutedEventArgs e)
 		{
 			mealChoice = "Burger";
 		}
-
 		private void rbHaggis_Checked(object sender, RoutedEventArgs e)
 		{
 			mealChoice = "Haggis";
 		}
-
+		// Closes application from the File > Quit menu item
 		private void MenuQuit_Click(object sender, RoutedEventArgs e)
 		{
 			var result = MessageBox.Show("Are you sure you want to exit?", "Quit",
@@ -255,6 +259,7 @@ namespace DelcoreMA2
 				Application.Current.Shutdown();
 			}
 		}
+		// Opens HelpWindow from the Help menu item
 		private void MenuHelp_Click(object sender, RoutedEventArgs e)
 		{
 			HelpWindow helpWindow = new HelpWindow();

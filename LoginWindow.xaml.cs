@@ -17,7 +17,7 @@ namespace DelcoreMA2
 	/// </summary>
 	public partial class LoginWindow : Window
 	{
-		
+		// Temporary username and password
 		private string user = "";
 		private string pass = "";
 
@@ -25,13 +25,14 @@ namespace DelcoreMA2
 		{
 			InitializeComponent();
 		}
-
+		// Handles Login button
 		private void btnLogin_Click(object sender, RoutedEventArgs e)
 		{
+			// Checks to make sure entered username and password match with stored username and password
 			if((user == tbUser.Text) && (pass == pbPass.Password))
 			{
+				// Opens MainWindow
 				MainWindow m = new MainWindow();
-				m.Background = Brushes.Azure;
 				m.Title = "Welcome";
 				m.ShowDialog();
 			}
