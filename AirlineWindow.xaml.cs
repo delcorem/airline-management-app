@@ -18,7 +18,7 @@ namespace DelcoreMA2
 	/// </summary>
 	public partial class AirlineWindow : Window
 	{
-		// private Queue<Airlines> airlineQueue = new Queue<Airlines>();
+		// Reference to MainWindow to use AirlineQueue as per requirements
 		MainWindow main;
 
 		private string airplaneType = "";
@@ -29,12 +29,12 @@ namespace DelcoreMA2
 			main = m;
 			InitializeComponent();
 
+			// Populates the listbox with the Name from each item in the stack
 			var plane = from airline in main.AirlineQueue
 						 select airline.Name;
-
 			lstAirlines.DataContext = plane;
 		}
-
+		// Populates the textboxes and radio buttons with information from the selected listbox item
 		private void lstAirlines_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			int i = lstAirlines.SelectedIndex;
@@ -46,6 +46,7 @@ namespace DelcoreMA2
 			{
 				tbName.Text = s.Name;
 				tbSeats.Text = s.SeatsAvailable.ToString();
+				// Checks a radio button depending on the Airplane in the queue object
 				switch(s.Airplane)
 				{
 					case "Boeing 777":
@@ -64,7 +65,8 @@ namespace DelcoreMA2
 						rbDouglas.IsChecked = true;
 						break;
 				}
-				switch(s.MealAvailable)
+				// Checks a radio button depending on the MealAvailable in the queue object
+				switch (s.MealAvailable)
 				{
 					case "Pizza":
 						rbPizza.IsChecked = true;
@@ -85,9 +87,10 @@ namespace DelcoreMA2
 
 			}
 		}
-
+		// Handles the Add button, that allows the user to add an item to the queue
 		private void btnAdd_Click(object sender, RoutedEventArgs e)
 		{
+			// Checks for empty textboxes
 			if (tbName.Text == "" || tbSeats.Text == "" || airplaneType == "" ||
 				mealChoice == "")
 			{
@@ -96,12 +99,13 @@ namespace DelcoreMA2
 			}
 			else if (int.TryParse(tbSeats.Text, out int seatsAvailable))
 			{
+				// Adds the textbox and radio buttpn information to a Customer object, then object is added to the queue
 				main.AirlineQueue.Enqueue(new Airlines(main.AirlineQueue.Count, tbName.Text,
 						airplaneType, seatsAvailable, mealChoice));
 
+				// Repopulates the listbox with the updated queue
 				var plane = from airline in main.AirlineQueue
 							select airline.Name;
-
 				lstAirlines.DataContext = plane;
 			}
 			else

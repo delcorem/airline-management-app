@@ -18,30 +18,32 @@ namespace DelcoreMA2
 	/// </summary>
 	public partial class PassengerWindow : Window
 	{
-		
+		// Reference to MainWindow to use PassengerStack as per requirements
 		MainWindow main;
 		public PassengerWindow(MainWindow m)
 		{
 			main = m;
 			InitializeComponent();
 
+			// Populates the listbox with the stack
 			var pass = from passenger in main.PassengerStack
 					   orderby passenger.ID
 					   select passenger.ID;
-
 			lstPassenger.DataContext = pass;
 		}
-
+		// Handles the Add button, that allows the user to add an item to the stack
 		private void btnAdd_Click(object sender, RoutedEventArgs e)
 		{
+			// Converts the text inside the textboxes to int, and checks to make sure it converted correctly
 			if (int.TryParse(tbCustomerID.Text, out int customerID) && int.TryParse(tbFlightID.Text, out int flightID))
 			{
+				// Adds the textbox information to a Customer object, then the object is added to the stack
 				main.PassengerStack.Push(new Passenger(main.PassengerStack.Count, customerID,	flightID));
 
+				// Repopulates the listbox with the updated stack
 				var pass = from passenger in main.PassengerStack
 						   orderby passenger.ID
 						   select passenger.ID;
-
 				lstPassenger.DataContext = pass;
 			}
 			else
@@ -50,7 +52,7 @@ namespace DelcoreMA2
 					MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 		}
-
+		// Handles the Update button, that allows the user to change information about a selected item in the listbox
 		private void btnUpdate_Click(object sender, RoutedEventArgs e)
 		{
 			var result = MessageBox.Show("Are you sure you want to update this passenger?",
@@ -58,23 +60,29 @@ namespace DelcoreMA2
 
 			if (result == MessageBoxResult.Yes)
 			{
+				// Converts the text inside the textboxes to int, and checks to make sure it converted correctly
 				if (int.TryParse(tbCustomerID.Text, out int customerID) && int.TryParse(tbFlightID.Text, out int flightID))
 				{
+					// Checks to make sure an item is selected in the listbox
 					if (lstPassenger.SelectedIndex != -1)
 					{
-						// As stack does not have the functionality to update an object at a specific index,
-						// I copied to a list, did the update, then converted back to a stack
+						/* Using a stack was a requirement, so as stacks do not have the
+						 * functionality to update an object at a specific index, I copied
+						 * to a list, did the update, then converted back to a stack
+						 */
 						List<Passenger> passengerList = new List<Passenger>(main.PassengerStack.ToList());
 
+						// Grabs information from the textboxes, then updates the selected item with the new information
 						Passenger passObj = new Passenger(lstPassenger.SelectedIndex, customerID, flightID);
 						passengerList[lstPassenger.SelectedIndex] = passObj;
 
+						// Converts back to a stack
 						main.PassengerStack = new Stack<Passenger>(passengerList);
 
+						// Repopulates the listbox with the updated stack
 						var pass = from passenger in main.PassengerStack
 								   orderby passenger.ID
 								   select passenger.ID;
-
 						lstPassenger.DataContext = pass;
 					}
 					else
@@ -90,7 +98,7 @@ namespace DelcoreMA2
 				}
 			}
 		}
-
+		// Handles the Delete button, deleting a selected item in the listbox
 		private void btnDelete_Click(object sender, RoutedEventArgs e)
 		{
 			var result = MessageBox.Show("Are you sure you want to delete this passenger?", 
@@ -98,21 +106,28 @@ namespace DelcoreMA2
 
 			if (result == MessageBoxResult.Yes)
 			{
+				// Checks to make sure there is a selected item in the listbox
 				if (lstPassenger.SelectedIndex != -1)
 				{
-					// As stack does not have the functionality to update an object at a specific index,
-					// I copied to a list, did the update, then converted back to a stack
+					/* Using a stack was a requirement, so as stacks do not have the
+					 * functionality to delete an object at a specific index, I copied
+					 * to a list, did the delete, then converted back to a stack
+					 */
 					List<Passenger> passengerList = new List<Passenger>(main.PassengerStack.ToList());
 
+					// Deletes selected item
 					passengerList.RemoveAt(lstPassenger.SelectedIndex);
 
+					// Resets the ID of all items remaining in the list, so there are no gaps in IDs. (Ex. 0, 1, 3, etc.)
 					for (int i = 0; i < passengerList.Count; i++)
 					{
 						passengerList[i].ID = i;
 					}
 
+					// Converts back to stack
 					main.PassengerStack = new Stack<Passenger>(passengerList);
 
+					// Repopulates the listbox with the updated stack
 					var pass = from passenger in main.PassengerStack
 							   orderby passenger.ID
 							   select passenger.ID;
@@ -126,7 +141,7 @@ namespace DelcoreMA2
 				}
 			}
 		}
-
+		// Populates the textboxes with information from the selected listbox item
 		private void lstPassenger_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			int i = lstPassenger.SelectedIndex;
@@ -148,7 +163,7 @@ namespace DelcoreMA2
 				lstFlights.DataContext = flight;
 			}
 		}
-
+		// Closes application from the File > Quit menu item
 		private void MenuQuit_Click(object sender, RoutedEventArgs e)
 		{
 			var result = MessageBox.Show("Are you sure you want to exit?", "Quit",
@@ -158,7 +173,7 @@ namespace DelcoreMA2
 				Application.Current.Shutdown();
 			}
 		}
-
+		// Opens HelpWindow from the Help menu item
 		private void MenuHelp_Click(object sender, RoutedEventArgs e)
 		{
 			HelpWindow helpWindow = new HelpWindow();
