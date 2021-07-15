@@ -4,6 +4,7 @@ using System.Text;
 
 namespace DelcoreMA2
 {
+	// Class that defines the Customer object
 	class Customer
 	{
 		private int _ID;

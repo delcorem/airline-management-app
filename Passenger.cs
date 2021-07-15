@@ -4,6 +4,7 @@ using System.Text;
 
 namespace DelcoreMA2
 {
+	// Class that defines the Passenger object
 	class Passenger
 	{
 		private int _ID;

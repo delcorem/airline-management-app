@@ -4,6 +4,7 @@ using System.Text;
 
 namespace DelcoreMA2
 {
+	// Class that defines the Flights object
 	class Flights
 	{
 		private int _ID;
